@@ -1,10 +1,46 @@
 @import "tailwindcss";
 
 @theme {
+  /* Colors */
   --color-primary: #1a1a2e;
   --color-secondary: #f5f5dc;
   --color-accent: #d4af37;
   --color-dark: #0f0f1e;
   --color-card: #16213e;
   --color-card-hover: #1e2a4a;
+  
+  /* Breakpoints for responsive */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+}
+
+/* Base styles */
+body {
+  background-color: var(--color-dark);
+  color: var(--color-secondary);
+}
+
+/* Custom utilities */
+.text-gradient {
+  background: linear-gradient(to right, #d4af37, #fde047);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section-padding {
+  padding: 4rem 1rem;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding: 6rem 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    padding: 6rem 2rem;
+  }
 }
