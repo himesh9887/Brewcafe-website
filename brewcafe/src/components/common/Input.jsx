@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Input = ({ 
+const InputField = ({ 
   label, 
   type = 'text', 
   placeholder, 
@@ -39,4 +39,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default InputField;

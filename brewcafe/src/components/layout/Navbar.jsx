@@ -4,6 +4,7 @@ import { Menu, X, ShoppingCart, User, Coffee } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../common/Button';
+import logo from '../../assets/images/favicon.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,12 +27,14 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
+
           <Link to="/" className="flex items-center gap-2 group">
-            <Coffee className="text-accent group-hover:rotate-12 transition-transform duration-300" size={32} />
+          <img src={logo} alt="BrewCafe Logo" className="h-15 w-15" />
             <span className="text-xl md:text-2xl font-bold text-secondary">
               Brew<span className="text-accent">Cafe</span>
             </span>
           </Link>
+
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
