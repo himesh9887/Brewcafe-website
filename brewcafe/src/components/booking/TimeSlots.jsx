@@ -13,14 +13,9 @@ import {
 } from 'lucide-react';
 
 const TimeSlots = ({ selectedTime, setSelectedTime }) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible] = useState(true);
   const [hoveredTime, setHoveredTime] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const [bookedSlots, setBookedSlots] = useState(['10:00 AM', '02:30 PM', '06:00 PM']);
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
 
   const timeSlots = [
     { time: '08:00 AM', period: 'morning', availability: 'high' },

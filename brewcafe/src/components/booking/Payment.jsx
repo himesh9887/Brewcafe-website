@@ -17,7 +17,7 @@ import {
 const Payment = ({ onPaymentSelect, onPaymentChange }) => {
   const [selectedMethod, setSelectedMethod] = useState('card');
   const [paymentType, setPaymentType] = useState('full');
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible] = useState(true);
   const [cardData, setCardData] = useState({
     number: '',
     expiry: '',
@@ -27,10 +27,6 @@ const Payment = ({ onPaymentSelect, onPaymentChange }) => {
   const [isCardFlipped, setIsCardFlipped] = useState(false);
   const [upiCopied, setUpiCopied] = useState(false);
   const upiId = '0000000000@axl';
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
 
   const isCardValid = (data) =>
     data.number.length === 19 &&
@@ -146,7 +142,7 @@ const Payment = ({ onPaymentSelect, onPaymentChange }) => {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-[#d4af37]/10 rounded-lg border border-[#d4af37]/20">
+          <div className="p-2 bg-accent/10 rounded-lg border border-accent/20">
             <Lock className="text-[#d4af37]" size={20} />
           </div>
           <div>
