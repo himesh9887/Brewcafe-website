@@ -1,22 +1,23 @@
 import React from 'react';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { CAFE_CONTACT } from '../../config/contact';
 
 const ContactInfo = () => {
   const info = [
     {
       icon: MapPin,
       title: 'Visit Us',
-      lines: ['123 Coffee Street', 'Brew District, NY 10001'],
+      lines: [CAFE_CONTACT.addressLine1, CAFE_CONTACT.addressLine2],
     },
     {
       icon: Phone,
       title: 'Call Us',
-      lines: ['+1 (555) 123-4567', '+1 (555) 987-6543'],
+      lines: [CAFE_CONTACT.phonePrimary, CAFE_CONTACT.phoneSecondary],
     },
     {
       icon: Mail,
       title: 'Email Us',
-      lines: ['hello@brewcafe.com', 'support@brewcafe.com'],
+      lines: [CAFE_CONTACT.email, CAFE_CONTACT.email],
     },
     {
       icon: Clock,

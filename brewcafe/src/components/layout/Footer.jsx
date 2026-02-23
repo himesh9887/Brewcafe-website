@@ -65,7 +65,7 @@
 //               </li>
 //               <li className="flex items-center gap-3 text-gray-400 text-sm">
 //                 <Mail size={18} className="text-accent flex-shrink-0" />
-//                 <span>hello@brewcafe.com</span>
+//                 <span>himeshrajput619@gmail.com</span>
 //               </li>
 //             </ul>
 //           </div>
@@ -113,6 +113,7 @@ import {
   Facebook, Instagram, Twitter, Youtube,
   ArrowUp, Heart
 } from 'lucide-react';
+import { CAFE_CONTACT } from '../../config/contact';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -272,20 +273,20 @@ const Footer = () => {
                   <MapPin size={16} className="text-[#d4af37]" />
                 </div>
                 <span className="group-hover:text-[#f5f5dc] transition-colors">
-                  123 Coffee Street, Brew District<br />New York, NY 10001
+                  {CAFE_CONTACT.addressLine1}<br />{CAFE_CONTACT.addressLine2}
                 </span>
               </li>
               <li className="flex items-center gap-3 text-gray-400 text-sm group cursor-pointer">
                 <div className="p-2 bg-[#16213e] rounded-lg group-hover:bg-[#d4af37]/10 transition-colors">
                   <Phone size={16} className="text-[#d4af37]" />
                 </div>
-                <span className="group-hover:text-[#f5f5dc] transition-colors">+1 (555) 123-4567</span>
+                <span className="group-hover:text-[#f5f5dc] transition-colors">{CAFE_CONTACT.phonePrimary}</span>
               </li>
               <li className="flex items-center gap-3 text-gray-400 text-sm group cursor-pointer">
                 <div className="p-2 bg-[#16213e] rounded-lg group-hover:bg-[#d4af37]/10 transition-colors">
                   <Mail size={16} className="text-[#d4af37]" />
                 </div>
-                <span className="group-hover:text-[#f5f5dc] transition-colors">hello@brewcafe.com</span>
+                <span className="group-hover:text-[#f5f5dc] transition-colors">{CAFE_CONTACT.email}</span>
               </li>
             </ul>
           </div>

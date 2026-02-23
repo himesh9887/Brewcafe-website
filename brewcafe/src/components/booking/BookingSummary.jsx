@@ -13,7 +13,7 @@ import {
   Check
 } from 'lucide-react';
 
-const BookingSummary = ({ formData, selectedTime }) => {
+const BookingSummary = ({ formData, selectedTime, paymentDetails }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [copied, setCopied] = useState(false);
   const [bookingId] = useState(() => 'BC' + Math.random().toString(36).substr(2, 6).toUpperCase());
@@ -29,7 +29,14 @@ const BookingSummary = ({ formData, selectedTime }) => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const isComplete = formData.name && formData.date && selectedTime;
+  const isComplete = formData.name && formData.date && selectedTime && paymentDetails?.isValid;
+  const guestCount = Math.max(parseInt(formData.guests, 10) || 1, 1);
+  const pricePerGuest = 20;
+  const subtotal = guestCount * pricePerGuest;
+  const isAdvancePayment = paymentDetails?.paymentType === 'advance';
+  const advanceAmount = Math.max(Math.round(subtotal * 0.3), 10);
+  const amountToPayNow = isAdvancePayment ? advanceAmount : subtotal;
+  const remainingAtCafe = Math.max(subtotal - amountToPayNow, 0);
 
   const details = [
     {
@@ -51,6 +58,14 @@ const BookingSummary = ({ formData, selectedTime }) => {
         ? `${formData.guests} ${parseInt(formData.guests) === 1 ? 'Guest' : 'Guests'}`
         : 'Not selected',
       status: formData.guests ? 'complete' : 'pending',
+    },
+    {
+      icon: Coffee,
+      label: 'Payment',
+      value: paymentDetails
+        ? `${paymentDetails.method === 'cash' ? 'Pay at Cafe' : paymentDetails.method === 'card' ? 'Card' : paymentDetails.method === 'upi' ? 'UPI' : 'Wallet'} (${isAdvancePayment ? 'Advance' : 'Full'})`
+        : 'Not selected',
+      status: paymentDetails?.isValid ? 'complete' : 'pending',
     },
     {
       icon: MapPin,
@@ -114,7 +129,7 @@ const BookingSummary = ({ formData, selectedTime }) => {
             <p className="text-gray-400 text-xs">
               {isComplete 
                 ? 'All details filled. Proceed to confirm!' 
-                : 'Please fill in all required details'
+                : 'Please fill in all required details including payment'
               }
             </p>
           </div>
@@ -178,22 +193,45 @@ const BookingSummary = ({ formData, selectedTime }) => {
         <div className="flex justify-between items-center text-sm">
           <span className="text-gray-400 flex items-center gap-2">
             <Utensils size={14} />
-            Table Reservation
+            Price / Guest
           </span>
-          <span className="text-[#f5f5dc] font-medium">Free</span>
+          <span className="text-[#f5f5dc] font-medium">${pricePerGuest.toFixed(2)}</span>
         </div>
         
         <div className="flex justify-between items-center text-sm">
-          <span className="text-gray-400">Service Fee</span>
-          <span className="text-green-400 text-xs">Waived</span>
+          <span className="text-gray-400">Guests</span>
+          <span className="text-[#f5f5dc] font-medium">{guestCount}</span>
+        </div>
+
+        <div className="flex justify-between items-center text-sm">
+          <span className="text-gray-400">Subtotal</span>
+          <span className="text-[#f5f5dc] font-medium">${subtotal.toFixed(2)}</span>
+        </div>
+
+        <div className="flex justify-between items-center text-sm">
+          <span className="text-gray-400">Payment Type</span>
+          <span className="text-[#d4af37] text-xs font-semibold">
+            {isAdvancePayment ? 'Advance (30%)' : 'Full Payment'}
+          </span>
+        </div>
+
+        <div className="flex justify-between items-center text-sm">
+          <span className="text-gray-400">Pay Now</span>
+          <span className="text-[#f5f5dc] font-medium">${amountToPayNow.toFixed(2)}</span>
         </div>
 
         <div className="pt-3 border-t border-gray-800">
           <div className="flex justify-between items-center">
             <span className="text-[#f5f5dc] font-semibold">Total Amount</span>
-            <span className="text-2xl font-bold text-[#d4af37]">$20.00</span>
+            <span className="text-2xl font-bold text-[#d4af37]">${subtotal.toFixed(2)}</span>
           </div>
-          <p className="text-gray-500 text-xs mt-1 text-right">No charges for reservations</p>
+          {remainingAtCafe > 0 ? (
+            <p className="text-gray-500 text-xs mt-1 text-right">
+              Remaining at cafe: ${remainingAtCafe.toFixed(2)}
+            </p>
+          ) : (
+            <p className="text-gray-500 text-xs mt-1 text-right">Fully paid online</p>
+          )}
         </div>
       </div>
 

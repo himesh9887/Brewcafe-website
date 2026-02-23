@@ -6,10 +6,18 @@ import BookingSummary from '../../components/booking/BookingSummary';
 import Payment from '../../components/booking/Payment';
 import Success from '../../components/booking/Success';
 import Button from '../../components/common/Button';
+import { sendBookingEmails } from '../../services/bookingEmails';
 
-import { ChevronRight, ChevronLeft, Check, Calendar, Clock, Users, CreditCard, Sparkles } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Check, Calendar, Clock, Users, CreditCard, Sparkles, Mail } from 'lucide-react';
 
 const Booking = () => {
+  const PAYMENT_LABELS = {
+    card: 'Credit / Debit Card',
+    upi: 'UPI Payment',
+    wallet: 'Digital Wallet',
+    cash: 'Pay at Cafe',
+  };
+
   const [step, setStep] = useState(1);
   const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({
@@ -22,6 +30,17 @@ const Booking = () => {
   });
   const [selectedTime, setSelectedTime] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('card');
+  const [paymentDetails, setPaymentDetails] = useState({
+    method: 'card',
+    paymentType: 'full',
+    isValid: false,
+    cardData: {
+      number: '',
+      expiry: '',
+      cvv: '',
+      name: '',
+    },
+  });
   const [isComplete, setIsComplete] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const sectionRef = useRef(null);
@@ -43,6 +62,22 @@ const Booking = () => {
     } else {
       setIsProcessing(true);
       await new Promise(resolve => setTimeout(resolve, 1500));
+
+      try {
+        await sendBookingEmails({
+          customerName: formData.name,
+          customerEmail: formData.email,
+          customerPhone: formData.phone,
+          bookingDate: formData.date,
+          bookingTime: selectedTime,
+          guests: formData.guests,
+          paymentMethod: `${PAYMENT_LABELS[paymentDetails.method] || paymentDetails.method} (${paymentDetails.paymentType === 'full' ? 'Full Payment' : 'Advance Payment'})`,
+          requests: formData.requests,
+        });
+      } catch (error) {
+        console.error('Booking email notifications failed:', error);
+      }
+
       setIsProcessing(false);
       setIsComplete(true);
     }
@@ -59,7 +94,7 @@ const Booking = () => {
       case 2:
         return selectedTime !== '';
       case 3:
-        return true;
+        return paymentDetails.isValid;
       default:
         return true;
     }
@@ -84,6 +119,18 @@ const Booking = () => {
                   requests: '',
                 });
                 setSelectedTime('');
+                setPaymentMethod('card');
+                setPaymentDetails({
+                  method: 'card',
+                  paymentType: 'full',
+                  isValid: false,
+                  cardData: {
+                    number: '',
+                    expiry: '',
+                    cvv: '',
+                    name: '',
+                  },
+                });
               }}
             />
           </div>
@@ -201,7 +248,10 @@ const Booking = () => {
                   )}
                   
                   {step === 3 && (
-                    <Payment onPaymentSelect={setPaymentMethod} />
+                    <Payment
+                      onPaymentSelect={setPaymentMethod}
+                      onPaymentChange={setPaymentDetails}
+                    />
                   )}
                   
                   {step === 4 && (
@@ -218,7 +268,11 @@ const Booking = () => {
                           { label: 'Date', value: formData.date, icon: Calendar },
                           { label: 'Time', value: selectedTime, icon: Clock },
                           { label: 'Guests', value: `${formData.guests} people`, icon: Users },
-                          { label: 'Payment', value: paymentMethod, icon: CreditCard },
+                          {
+                            label: 'Payment',
+                            value: `${PAYMENT_LABELS[paymentDetails.method] || paymentMethod} (${paymentDetails.paymentType === 'full' ? 'Full' : 'Advance'})`,
+                            icon: CreditCard,
+                          },
                         ].map((item, idx) => (
                           <div key={idx} className="flex items-center justify-between py-2 border-b border-gray-800 last:border-0">
                             <div className="flex items-center gap-3 text-gray-400">
@@ -279,7 +333,11 @@ const Booking = () => {
             <div className="hidden lg:block">
               <div className={`sticky top-24 transition-all duration-1000 delay-500
                             ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
-                <BookingSummary formData={formData} selectedTime={selectedTime} />
+                <BookingSummary
+                  formData={formData}
+                  selectedTime={selectedTime}
+                  paymentDetails={paymentDetails}
+                />
               </div>
             </div>
 

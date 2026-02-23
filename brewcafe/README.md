@@ -14,3 +14,21 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Booking Email Notifications Setup
+
+Booking confirm hone par app customer aur cafe dono ko email bhej sakti hai (EmailJS through).
+
+1. `brewcafe/.env.example` ko copy karke `brewcafe/.env.local` banao.
+2. In values ko fill karo:
+   - `VITE_EMAILJS_SERVICE_ID`
+   - `VITE_EMAILJS_CUSTOMER_TEMPLATE_ID`
+   - `VITE_EMAILJS_CAFE_TEMPLATE_ID`
+   - `VITE_EMAILJS_PUBLIC_KEY`
+   - `VITE_CAFE_NOTIFICATION_EMAIL`
+3. Dev server restart karo.
+
+Notes:
+- Customer template me `to_email` variable use karo.
+- Cafe template me bhi `to_email` variable use karo.
+- Agar env config missing hogi to booking flow chalega, bas emails skip ho jayengi.

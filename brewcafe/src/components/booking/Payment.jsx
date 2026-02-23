@@ -2,19 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { 
   CreditCard, 
   Wallet, 
-  Smartphone, 
   Lock, 
   Shield, 
   CheckCircle2,
   AlertCircle,
   Banknote,
   QrCode,
+  Copy,
   ChevronRight,
-  Sparkles
+  Sparkles,
+  CircleDollarSign
 } from 'lucide-react';
 
-const Payment = ({ onPaymentSelect }) => {
+const Payment = ({ onPaymentSelect, onPaymentChange }) => {
   const [selectedMethod, setSelectedMethod] = useState('card');
+  const [paymentType, setPaymentType] = useState('full');
   const [isVisible, setIsVisible] = useState(false);
   const [cardData, setCardData] = useState({
     number: '',
@@ -22,16 +24,36 @@ const Payment = ({ onPaymentSelect }) => {
     cvv: '',
     name: ''
   });
-  const [focusedField, setFocusedField] = useState(null);
   const [isCardFlipped, setIsCardFlipped] = useState(false);
+  const [upiCopied, setUpiCopied] = useState(false);
+  const upiId = '0000000000@axl';
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
+  const isCardValid = (data) =>
+    data.number.length === 19 &&
+    data.expiry.length === 5 &&
+    data.cvv.length === 3 &&
+    data.name.trim().length >= 2;
+
+  useEffect(() => {
+    const isValid = selectedMethod === 'card' ? isCardValid(cardData) : true;
+    onPaymentChange?.({
+      method: selectedMethod,
+      paymentType,
+      isValid,
+      cardData,
+    });
+  }, [selectedMethod, paymentType, cardData, onPaymentChange]);
+
   const handleMethodSelect = (methodId) => {
     setSelectedMethod(methodId);
     onPaymentSelect(methodId);
+    if (methodId === 'cash') {
+      setPaymentType('advance');
+    }
   };
 
   const handleCardChange = (e) => {
@@ -59,6 +81,16 @@ const Payment = ({ onPaymentSelect }) => {
     setCardData(prev => ({ ...prev, [name]: formattedValue }));
   };
 
+  const handleCopyUpi = async () => {
+    try {
+      await navigator.clipboard.writeText(upiId);
+      setUpiCopied(true);
+      setTimeout(() => setUpiCopied(false), 2000);
+    } catch {
+      setUpiCopied(false);
+    }
+  };
+
   const methods = [
     { 
       id: 'card', 
@@ -71,8 +103,8 @@ const Payment = ({ onPaymentSelect }) => {
     { 
       id: 'upi', 
       label: 'UPI Payment', 
-      icon: Smartphone, 
-      desc: 'Google Pay, PhonePe, Paytm',
+      icon: QrCode, 
+      desc: 'Pay to 0000000000@axl',
       color: 'from-purple-500 to-pink-400',
       secure: true
     },
@@ -94,7 +126,20 @@ const Payment = ({ onPaymentSelect }) => {
     },
   ];
 
-  const isFormValid = cardData.number.length >= 19 && cardData.expiry.length === 5 && cardData.cvv.length === 3;
+  const paymentTypeOptions = [
+    {
+      id: 'advance',
+      label: 'Pay Advance',
+      desc: 'Book with partial payment now',
+    },
+    {
+      id: 'full',
+      label: 'Full Payment',
+      desc: 'Pay complete amount now',
+    },
+  ];
+
+  const isFormValid = isCardValid(cardData);
 
   return (
     <div className={`space-y-6 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -195,6 +240,36 @@ const Payment = ({ onPaymentSelect }) => {
             </label>
           );
         })}
+      </div>
+
+      {/* Payment type */} 
+      <div className="p-4 bg-[#16213e] rounded-xl border border-gray-800">
+        <div className="flex items-center gap-2 mb-3">
+          <CircleDollarSign size={16} className="text-[#d4af37]" />
+          <p className="text-[#f5f5dc] text-sm font-medium">Payment Type</p>
+        </div>
+        <div className="grid sm:grid-cols-2 gap-3">
+          {paymentTypeOptions.map((type) => {
+            const isSelected = paymentType === type.id;
+            return (
+              <button
+                key={type.id}
+                type="button"
+                onClick={() => setPaymentType(type.id)}
+                className={`text-left p-3 rounded-lg border transition-all
+                          ${isSelected
+                            ? 'border-[#d4af37] bg-[#d4af37]/10'
+                            : 'border-gray-700 bg-[#1a1a2e] hover:border-gray-600'
+                          }`}
+              >
+                <p className={`text-sm font-medium ${isSelected ? 'text-[#f5f5dc]' : 'text-gray-300'}`}>
+                  {type.label}
+                </p>
+                <p className="text-xs text-gray-500 mt-1">{type.desc}</p>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Card payment form */}
@@ -332,6 +407,12 @@ const Payment = ({ onPaymentSelect }) => {
                 Your payment info is encrypted and secure. We never store your CVV.
               </p>
             </div>
+
+            {!isFormValid && (
+              <p className="text-xs text-amber-400">
+                Fill card number, holder name, expiry and CVV to continue.
+              </p>
+            )}
           </div>
         </div>
       )}
@@ -342,7 +423,21 @@ const Payment = ({ onPaymentSelect }) => {
           <div className="w-48 h-48 mx-auto mb-4 bg-white rounded-xl p-4 flex items-center justify-center">
             <QrCode size={160} className="text-[#1a1a2e]" />
           </div>
-          <p className="text-gray-400 text-sm mb-4">Scan with any UPI app</p>
+          <p className="text-gray-400 text-sm mb-2">Scan with any UPI app</p>
+          <div className="max-w-sm mx-auto mb-4 p-3 bg-[#1a1a2e] border border-gray-700 rounded-lg">
+            <p className="text-xs text-gray-500 mb-1">UPI ID</p>
+            <div className="flex items-center justify-between gap-2">
+              <span className="font-mono text-[#f5f5dc] text-sm sm:text-base">{upiId}</span>
+              <button
+                type="button"
+                onClick={handleCopyUpi}
+                className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded-md bg-[#d4af37]/10 text-[#d4af37] hover:bg-[#d4af37]/20 transition-colors"
+              >
+                <Copy size={14} />
+                {upiCopied ? 'Copied' : 'Copy'}
+              </button>
+            </div>
+          </div>
           <div className="flex justify-center gap-4">
             {['Google Pay', 'PhonePe', 'Paytm'].map((app) => (
               <div key={app} className="px-3 py-1.5 bg-[#1a1a2e] rounded-lg text-xs text-gray-400">
@@ -381,7 +476,7 @@ const Payment = ({ onPaymentSelect }) => {
             <div>
               <h4 className="text-[#f5f5dc] font-semibold mb-1">Pay at the Cafe</h4>
               <p className="text-gray-400 text-sm mb-3">
-                No upfront payment required. Pay with cash or card when you arrive.
+                Advance payment recommended for reservation. You can also pay full now.
               </p>
               <div className="flex items-center gap-2 text-xs text-[#d4af37]">
                 <CheckCircle2 size={14} />
