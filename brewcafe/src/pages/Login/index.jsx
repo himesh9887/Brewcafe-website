@@ -1,30 +1,47 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Layout from '../../components/layout/Layout';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 import { useAuth } from '../../context/AuthContext';
-import { Coffee, Mail, Lock, User, ArrowRight } from 'lucide-react';
+import { AlertCircle, ArrowRight, CheckCircle2, Coffee, Lock, Mail, User } from 'lucide-react';
 
 const Login = () => {
-  const [activeTab, setActiveTab] = useState('login'); // login, register, forgot
+  const [activeTab, setActiveTab] = useState('login');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
   });
-  const { login, register, loading } = useAuth();
+  const [formMessage, setFormMessage] = useState({ type: '', text: '' });
+  const { login, register, forgotPassword, loading, error, setError } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (activeTab === 'login') {
-      await login(formData.email, formData.password);
-      navigate('/');
-    } else if (activeTab === 'register') {
-      await register(formData.name, formData.email, formData.password);
-      navigate('/');
+
+    if (activeTab === 'register' && formData.password !== formData.confirmPassword) {
+      setFormMessage({ type: 'error', text: 'Passwords do not match' });
+      return;
+    }
+
+    try {
+      setFormMessage({ type: '', text: '' });
+      setError('');
+
+      if (activeTab === 'login') {
+        await login(formData.email, formData.password);
+        navigate('/');
+      } else if (activeTab === 'register') {
+        await register(formData.name, formData.email, formData.password);
+        navigate('/');
+      } else {
+        const response = await forgotPassword(formData.email);
+        setFormMessage({ type: 'success', text: response.message });
+      }
+    } catch (err) {
+      setFormMessage({ type: 'error', text: err.message || 'Something went wrong' });
     }
   };
 
@@ -33,7 +50,6 @@ const Login = () => {
       <div className="min-h-screen bg-dark pt-24 pb-12 flex items-center justify-center">
         <div className="max-w-md w-full mx-4">
           <div className="bg-card rounded-2xl p-8 border border-gray-800 shadow-2xl">
-            {/* Header */}
             <div className="text-center mb-8">
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-accent/10 mb-4">
                 <Coffee className="text-accent" size={32} />
@@ -50,10 +66,9 @@ const Login = () => {
               </p>
             </div>
 
-            {/* Tabs */}
             <div className="flex mb-6 border-b border-gray-800">
               <button
-                onClick={() => setActiveTab('login')}
+                onClick={() => { setActiveTab('login'); setFormMessage({ type: '', text: '' }); setError(''); }}
                 className={`flex-1 pb-3 text-sm font-medium transition-colors relative
                   ${activeTab === 'login' ? 'text-accent' : 'text-gray-500 hover:text-secondary'}`}
               >
@@ -61,7 +76,7 @@ const Login = () => {
                 {activeTab === 'login' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent" />}
               </button>
               <button
-                onClick={() => setActiveTab('register')}
+                onClick={() => { setActiveTab('register'); setFormMessage({ type: '', text: '' }); setError(''); }}
                 className={`flex-1 pb-3 text-sm font-medium transition-colors relative
                   ${activeTab === 'register' ? 'text-accent' : 'text-gray-500 hover:text-secondary'}`}
               >
@@ -70,7 +85,6 @@ const Login = () => {
               </button>
             </div>
 
-            {/* Forms */}
             <form onSubmit={handleSubmit} className="space-y-4">
               {activeTab === 'register' && (
                 <Input
@@ -117,11 +131,22 @@ const Login = () => {
                 <div className="flex justify-end">
                   <button
                     type="button"
-                    onClick={() => setActiveTab('forgot')}
+                    onClick={() => { setActiveTab('forgot'); setFormMessage({ type: '', text: '' }); setError(''); }}
                     className="text-sm text-accent hover:underline"
                   >
                     Forgot password?
                   </button>
+                </div>
+              )}
+
+              {(formMessage.text || error) && (
+                <div className={`flex items-start gap-2 rounded-xl border px-4 py-3 text-sm ${
+                  (formMessage.type === 'success')
+                    ? 'border-green-500/30 bg-green-500/10 text-green-300'
+                    : 'border-red-500/30 bg-red-500/10 text-red-300'
+                }`}>
+                  {formMessage.type === 'success' ? <CheckCircle2 size={18} className="mt-0.5" /> : <AlertCircle size={18} className="mt-0.5" />}
+                  <span>{formMessage.text || error}</span>
                 </div>
               )}
 
@@ -141,7 +166,7 @@ const Login = () => {
               </Button>
             </form>
 
-            {/* Social Login */}
+            {activeTab !== 'forgot' && (
             <div className="mt-8">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
@@ -170,6 +195,7 @@ const Login = () => {
                 </button>
               </div>
             </div>
+            )}
           </div>
         </div>
       </div>

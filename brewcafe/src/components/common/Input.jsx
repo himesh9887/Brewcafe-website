@@ -8,7 +8,9 @@ const InputField = ({
   onChange, 
   required = false,
   icon: Icon,
-  className = ''
+  className = '',
+  name,
+  ...rest
 }) => {
   return (
     <div className={`space-y-2 ${className}`}>
@@ -24,15 +26,17 @@ const InputField = ({
           </div>
         )}
         <input
+          name={name}
           type={type}
           value={value}
           onChange={onChange}
           placeholder={placeholder}
           required={required}
-          className={`w-full bg-card border border-gray-700 rounded-lg px-4 py-3 text-secondary 
+          className={`w-full bg-card border border-gray-700 rounded-2xl px-4 py-3 text-secondary 
                      focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent
-                     placeholder-gray-500 transition-all duration-300
+                     placeholder-gray-500 transition-all duration-300 hover:border-gray-500
                      ${Icon ? 'pl-10' : ''}`}
+          {...rest}
         />
       </div>
     </div>

@@ -1,117 +1,17 @@
-// import React from 'react';
-// import { Link } from 'react-router-dom';
-// import { Coffee, MapPin, Phone, Mail, Clock, Facebook, Instagram, Twitter } from 'lucide-react';
-
-// const Footer = () => {
-//   const currentYear = new Date().getFullYear();
-
-//   return (
-//     <footer className="bg-primary border-t border-gray-800">
-//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 section-padding">
-//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-//           {/* Brand */}
-//           <div className="space-y-4">
-//             <Link to="/" className="flex items-center gap-2">
-//               <Coffee className="text-accent" size={28} />
-//               <span className="text-xl font-bold text-secondary">
-//                 Brew<span className="text-accent">Cafe</span>
-//               </span>
-//             </Link>
-//             <p className="text-gray-400 text-sm leading-relaxed">
-//               Experience the finest coffee in town. Crafted with passion, served with love. 
-//               Your perfect coffee moment awaits.
-//             </p>
-//             <div className="flex gap-4">
-//               {[Facebook, Instagram, Twitter].map((Icon, idx) => (
-//                 <a 
-//                   key={idx}
-//                   href="#"
-//                   className="w-10 h-10 rounded-full bg-card flex items-center justify-center text-gray-400 hover:bg-accent hover:text-primary transition-all duration-300"
-//                 >
-//                   <Icon size={18} />
-//                 </a>
-//               ))}
-//             </div>
-//           </div>
-
-//           {/* Quick Links */}
-//           <div>
-//             <h3 className="text-secondary font-semibold mb-4">Quick Links</h3>
-//             <ul className="space-y-3">
-//               {['Home', 'About Us', 'Menu', 'Book Table', 'Contact'].map((item) => (
-//                 <li key={item}>
-//                   <Link 
-//                     to={item === 'Home' ? '/' : `/${item.toLowerCase().replace(' ', '-')}`}
-//                     className="text-gray-400 hover:text-accent transition-colors text-sm"
-//                   >
-//                     {item}
-//                   </Link>
-//                 </li>
-//               ))}
-//             </ul>
-//           </div>
-
-//           {/* Contact Info */}
-//           <div>
-//             <h3 className="text-secondary font-semibold mb-4">Contact Us</h3>
-//             <ul className="space-y-3">
-//               <li className="flex items-start gap-3 text-gray-400 text-sm">
-//                 <MapPin size={18} className="text-accent flex-shrink-0 mt-0.5" />
-//                 <span>123 Coffee Street, Brew District<br />New York, NY 10001</span>
-//               </li>
-//               <li className="flex items-center gap-3 text-gray-400 text-sm">
-//                 <Phone size={18} className="text-accent flex-shrink-0" />
-//                 <span>+1 (555) 123-4567</span>
-//               </li>
-//               <li className="flex items-center gap-3 text-gray-400 text-sm">
-//                 <Mail size={18} className="text-accent flex-shrink-0" />
-//                 <span>himeshrajput619@gmail.com</span>
-//               </li>
-//             </ul>
-//           </div>
-
-//           {/* Hours */}
-//           <div>
-//             <h3 className="text-secondary font-semibold mb-4">Opening Hours</h3>
-//             <ul className="space-y-3">
-//               <li className="flex items-start gap-3 text-gray-400 text-sm">
-//                 <Clock size={18} className="text-accent flex-shrink-0 mt-0.5" />
-//                 <div>
-//                   <p className="text-secondary font-medium">Monday - Friday</p>
-//                   <p>7:00 AM - 9:00 PM</p>
-//                 </div>
-//               </li>
-//               <li className="flex items-start gap-3 text-gray-400 text-sm">
-//                 <Clock size={18} className="text-accent flex-shrink-0 mt-0.5 invisible" />
-//                 <div>
-//                   <p className="text-secondary font-medium">Saturday - Sunday</p>
-//                   <p>8:00 AM - 10:00 PM</p>
-//                 </div>
-//               </li>
-//             </ul>
-//           </div>
-//         </div>
-
-//         <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-//           <p className="text-gray-500 text-sm">
-//             © {currentYear} BrewCafe. All rights reserved. Crafted with ☕ and ❤️
-//           </p>
-//         </div>
-//       </div>
-//     </footer>
-//   );
-// };
-
-// export default Footer;
-
-
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  Coffee, MapPin, Phone, Mail, Clock, 
-  Facebook, Instagram, Twitter, Youtube,
-  ArrowUp, Heart
+import {
+  ArrowUp,
+  Clock,
+  Coffee,
+  Facebook,
+  Heart,
+  Instagram,
+  Mail,
+  MapPin,
+  Phone,
+  Twitter,
+  Youtube,
 } from 'lucide-react';
 import { CAFE_CONTACT } from '../../config/contact';
 
@@ -119,229 +19,173 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
-  const [hoveredLink, setHoveredLink] = useState(null);
-
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    if (email) {
-      setSubscribed(true);
-      setTimeout(() => setSubscribed(false), 3000);
-      setEmail('');
-    }
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   const quickLinks = [
     { name: 'Home', path: '/' },
-    { name: 'About Us', path: '/about' },
+    { name: 'About', path: '/about' },
     { name: 'Menu', path: '/menu' },
-    { name: 'Book Table', path: '/booking' },
+    { name: 'Booking', path: '/booking' },
     { name: 'Contact', path: '/contact' },
   ];
 
   const socialLinks = [
-    { icon: Facebook, href: '#', label: 'Facebook', color: 'hover:bg-blue-600' },
-    { icon: Instagram, href: '#', label: 'Instagram', color: 'hover:bg-pink-600' },
-    { icon: Twitter, href: '#', label: 'Twitter', color: 'hover:bg-sky-500' },
-    { icon: Youtube, href: '#', label: 'YouTube', color: 'hover:bg-red-600' },
+    { icon: Facebook, href: 'https://facebook.com', label: 'Facebook', hover: 'hover:bg-blue-600' },
+    { icon: Instagram, href: 'https://instagram.com', label: 'Instagram', hover: 'hover:bg-pink-600' },
+    { icon: Twitter, href: 'https://x.com', label: 'X', hover: 'hover:bg-sky-500' },
+    { icon: Youtube, href: 'https://youtube.com', label: 'YouTube', hover: 'hover:bg-red-600' },
   ];
 
+  const handleSubscribe = (event) => {
+    event.preventDefault();
+    if (!email.trim()) return;
+
+    setSubscribed(true);
+    setEmail('');
+    window.setTimeout(() => setSubscribed(false), 2500);
+  };
+
   return (
-    <footer className="bg-[#1a1a2e] border-t border-gray-800 relative">
-      {/* Scroll to top button */}
+    <footer className="relative border-t border-gray-800 bg-[#111425]">
       <button
-        onClick={scrollToTop}
-        className="absolute -top-6 left-1/2 transform -translate-x-1/2 w-12 h-12 bg-[#d4af37] rounded-full 
-                 flex items-center justify-center text-[#1a1a2e] shadow-lg hover:bg-[#fde047] 
-                 hover:scale-110 hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 group"
+        type="button"
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className="absolute -top-6 left-1/2 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full bg-accent text-primary shadow-lg shadow-accent/20 transition-all duration-300 hover:-translate-y-1 hover:bg-yellow-300"
       >
-        <ArrowUp size={24} className="group-hover:-translate-y-1 transition-transform" />
+        <ArrowUp size={20} />
       </button>
 
-      {/* Newsletter Section */}
       <div className="border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-            <div className="text-center lg:text-left">
-              <h3 className="text-2xl sm:text-3xl font-bold text-[#f5f5dc] mb-2">
-                Stay in the Loop
-              </h3>
-              <p className="text-gray-400">Get exclusive offers and coffee tips delivered to your inbox.</p>
+        <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+          <div className="card flex flex-col gap-6 px-6 py-8 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="mb-2 text-sm uppercase tracking-[0.24em] text-accent/80">Newsletter</p>
+              <h3 className="text-3xl font-bold text-secondary">Fresh offers. New brews.</h3>
+              <p className="mt-2 text-sm text-gray-400">Get launch offers, tasting notes, and seasonal updates.</p>
             </div>
-            <form onSubmit={handleSubscribe} className="w-full lg:w-auto flex gap-3">
-              <div className="relative flex-1 lg:w-80">
-                <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
+            <form onSubmit={handleSubscribe} className="flex w-full max-w-xl flex-col gap-3 sm:flex-row">
+              <div className="relative flex-1">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
                 <input
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(event) => setEmail(event.target.value)}
                   placeholder="Enter your email"
-                  className="w-full bg-[#16213e] border border-gray-700 rounded-lg pl-12 pr-4 py-3 
-                           text-[#f5f5dc] placeholder-gray-500 focus:outline-none focus:border-[#d4af37]
-                           transition-colors duration-300"
+                  className="input-field pl-11"
                   required
                 />
               </div>
               <button
                 type="submit"
-                className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300
-                          ${subscribed 
-                            ? 'bg-green-500 text-white' 
-                            : 'bg-[#d4af37] text-[#1a1a2e] hover:bg-[#fde047] hover:scale-105'
-                          }`}
+                className={`rounded-full px-6 py-3 font-semibold transition-all duration-300 ${
+                  subscribed
+                    ? 'bg-green-500 text-white'
+                    : 'bg-accent text-primary hover:-translate-y-0.5 hover:bg-yellow-300'
+                }`}
               >
-                {subscribed ? 'Subscribed!' : 'Subscribe'}
+                {subscribed ? 'Subscribed' : 'Subscribe'}
               </button>
             </form>
           </div>
         </div>
       </div>
 
-      {/* Main Footer */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-          {/* Brand */}
-          <div className="space-y-4 sm:col-span-2 lg:col-span-1">
-            <Link to="/" className="flex items-center gap-2 group">
-              <div className="p-2 bg-[#d4af37]/10 rounded-lg group-hover:bg-[#d4af37]/20 transition-colors">
-                <Coffee className="text-[#d4af37]" size={28} />
+      <div className="max-w-7xl mx-auto px-4 py-14 sm:px-6 lg:px-8">
+        <div className="grid gap-10 md:grid-cols-2 xl:grid-cols-4">
+          <div className="space-y-5">
+            <Link to="/" className="inline-flex items-center gap-3">
+              <div className="rounded-2xl bg-accent/10 p-3">
+                <Coffee className="text-accent" size={24} />
               </div>
-              <span className="text-2xl font-bold text-[#f5f5dc]">
-                Brew<span className="text-[#d4af37]">Cafe</span>
+              <span className="text-2xl font-bold text-secondary">
+                Brew<span className="text-accent">Cafe</span>
               </span>
             </Link>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Experience the finest coffee in town. Crafted with passion, served with love. 
-              Your perfect coffee moment awaits.
+            <p className="max-w-sm text-sm leading-7 text-gray-400">
+              Specialty coffee, artisan bakes, and a warm room to work, meet, or slow down.
             </p>
             <div className="flex gap-3">
-              {socialLinks.map((social, idx) => (
-                <a 
-                  key={idx}
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
                   href={social.href}
+                  target="_blank"
+                  rel="noreferrer"
                   aria-label={social.label}
-                  className={`w-10 h-10 rounded-full bg-[#16213e] flex items-center justify-center 
-                           text-gray-400 ${social.color} hover:text-white transition-all duration-300
-                           hover:scale-110 hover:shadow-lg`}
+                  className={`flex h-10 w-10 items-center justify-center rounded-full border border-gray-700 bg-white/5 text-gray-300 transition-all duration-300 hover:-translate-y-1 hover:border-transparent hover:text-white ${social.hover}`}
                 >
-                  <social.icon size={18} />
+                  <social.icon size={16} />
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
-            <h3 className="text-[#f5f5dc] font-semibold mb-4 flex items-center gap-2">
-              <span className="w-8 h-0.5 bg-[#d4af37]" />
-              Quick Links
-            </h3>
+            <h3 className="mb-5 text-lg font-semibold text-secondary">Navigate</h3>
             <ul className="space-y-3">
-              {quickLinks.map((link, idx) => (
+              {quickLinks.map((link) => (
                 <li key={link.name}>
-                  <Link 
-                    to={link.path}
-                    onMouseEnter={() => setHoveredLink(idx)}
-                    onMouseLeave={() => setHoveredLink(null)}
-                    className="text-gray-400 hover:text-[#d4af37] transition-colors text-sm 
-                             flex items-center gap-2 group"
-                  >
-                    <span className={`w-1.5 h-1.5 rounded-full bg-[#d4af37] transition-all duration-300
-                                   ${hoveredLink === idx ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`} />
+                  <Link to={link.path} className="group inline-flex items-center gap-3 text-sm text-gray-400 transition-colors hover:text-accent">
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent transition-transform duration-300 group-hover:scale-150" />
                     {link.name}
-                    <span className={`transition-transform duration-300 ${hoveredLink === idx ? 'translate-x-1' : ''}`}>
-                      →
-                    </span>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact Info */}
           <div>
-            <h3 className="text-[#f5f5dc] font-semibold mb-4 flex items-center gap-2">
-              <span className="w-8 h-0.5 bg-[#d4af37]" />
-              Contact Us
-            </h3>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3 text-gray-400 text-sm group cursor-pointer">
-                <div className="p-2 bg-[#16213e] rounded-lg group-hover:bg-[#d4af37]/10 transition-colors">
-                  <MapPin size={16} className="text-[#d4af37]" />
-                </div>
-                <span className="group-hover:text-[#f5f5dc] transition-colors">
-                  {CAFE_CONTACT.addressLine1}<br />{CAFE_CONTACT.addressLine2}
-                </span>
-              </li>
-              <li className="flex items-center gap-3 text-gray-400 text-sm group cursor-pointer">
-                <div className="p-2 bg-[#16213e] rounded-lg group-hover:bg-[#d4af37]/10 transition-colors">
-                  <Phone size={16} className="text-[#d4af37]" />
-                </div>
-                <span className="group-hover:text-[#f5f5dc] transition-colors">{CAFE_CONTACT.phonePrimary}</span>
-              </li>
-              <li className="flex items-center gap-3 text-gray-400 text-sm group cursor-pointer">
-                <div className="p-2 bg-[#16213e] rounded-lg group-hover:bg-[#d4af37]/10 transition-colors">
-                  <Mail size={16} className="text-[#d4af37]" />
-                </div>
-                <span className="group-hover:text-[#f5f5dc] transition-colors">{CAFE_CONTACT.email}</span>
-              </li>
-            </ul>
+            <h3 className="mb-5 text-lg font-semibold text-secondary">Visit</h3>
+            <div className="space-y-4 text-sm text-gray-400">
+              <div className="flex items-start gap-3">
+                <MapPin className="mt-1 text-accent" size={18} />
+                <p>{CAFE_CONTACT.addressLine1}<br />{CAFE_CONTACT.addressLine2}</p>
+              </div>
+              <a href={`tel:${CAFE_CONTACT.phonePrimary}`} className="flex items-center gap-3 transition-colors hover:text-accent">
+                <Phone className="text-accent" size={18} />
+                {CAFE_CONTACT.phonePrimary}
+              </a>
+              <a href={`mailto:${CAFE_CONTACT.email}`} className="flex items-center gap-3 transition-colors hover:text-accent">
+                <Mail className="text-accent" size={18} />
+                {CAFE_CONTACT.email}
+              </a>
+            </div>
           </div>
 
-          {/* Opening Hours */}
           <div>
-            <h3 className="text-[#f5f5dc] font-semibold mb-4 flex items-center gap-2">
-              <span className="w-8 h-0.5 bg-[#d4af37]" />
-              Opening Hours
-            </h3>
-            <ul className="space-y-3">
-              <li className="flex items-start gap-3 text-gray-400 text-sm">
-                <div className="p-2 bg-[#16213e] rounded-lg">
-                  <Clock size={16} className="text-[#d4af37]" />
-                </div>
+            <h3 className="mb-5 text-lg font-semibold text-secondary">Hours</h3>
+            <div className="space-y-4 text-sm text-gray-400">
+              <div className="flex items-start gap-3">
+                <Clock className="mt-1 text-accent" size={18} />
                 <div>
-                  <p className="text-[#f5f5dc] font-medium text-sm">Monday - Friday</p>
-                  <p className="text-gray-400 text-xs">7:00 AM - 9:00 PM</p>
+                  <p className="font-medium text-secondary">Monday - Friday</p>
+                  <p>7:00 AM - 9:00 PM</p>
                 </div>
-              </li>
-              <li className="flex items-start gap-3 text-gray-400 text-sm">
-                <div className="p-2 bg-[#16213e] rounded-lg">
-                  <Clock size={16} className="text-[#d4af37]" />
-                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <Clock className="mt-1 text-accent" size={18} />
                 <div>
-                  <p className="text-[#f5f5dc] font-medium text-sm">Saturday - Sunday</p>
-                  <p className="text-gray-400 text-xs">8:00 AM - 10:00 PM</p>
+                  <p className="font-medium text-secondary">Saturday - Sunday</p>
+                  <p>8:00 AM - 10:00 PM</p>
                 </div>
-              </li>
-              <li className="mt-4 p-3 bg-[#d4af37]/10 rounded-lg border border-[#d4af37]/20">
-                <p className="text-[#d4af37] text-xs font-semibold flex items-center gap-2">
-                  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                  Open Now
-                </p>
-              </li>
-            </ul>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-3 py-1 text-xs font-semibold text-green-400">
+                <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
+                Open now
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom Bar */}
       <div className="border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-            <p className="text-gray-500 text-sm flex items-center gap-1 flex-wrap justify-center">
-              © {currentYear} BrewCafe. All rights reserved. Crafted with 
-              <Coffee size={14} className="text-[#d4af37]" /> 
-              and 
-              <Heart size={14} className="text-red-500 fill-current" />
-            </p>
-            <div className="flex gap-6 text-sm text-gray-500">
-              <a href="#" className="hover:text-[#d4af37] transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-[#d4af37] transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-[#d4af37] transition-colors">Cookies</a>
-            </div>
+        <div className="max-w-7xl mx-auto flex flex-col gap-3 px-4 py-6 text-sm text-gray-500 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+          <p className="flex items-center gap-1">
+            Copyright {currentYear} BrewCafe. Crafted with <Heart size={14} className="fill-current text-red-500" /> and coffee.
+          </p>
+          <div className="flex gap-5">
+            <a href="#!" className="transition-colors hover:text-accent">Privacy</a>
+            <a href="#!" className="transition-colors hover:text-accent">Terms</a>
+            <a href="#!" className="transition-colors hover:text-accent">Cookies</a>
           </div>
         </div>
       </div>

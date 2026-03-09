@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Calendar,
   Users,
@@ -11,26 +11,18 @@ import {
   Sparkles,
   Clock,
 } from "lucide-react";
-import InputField from "../common/Input";
 
 const BookingForm = ({ formData, setFormData }) => {
   const [focusedField, setFocusedField] = useState(null);
   const [touchedFields, setTouchedFields] = useState({});
   const [errors, setErrors] = useState({});
   const [charCount, setCharCount] = useState(0);
-  const [formProgress, setFormProgress] = useState(0);
-
   const today = new Date().toISOString().split("T")[0];
-
-  // Calculate form progress
-  useEffect(() => {
-    const fields = ["name", "phone", "email", "date", "guests"];
-    const filledFields = fields.filter(
-      (field) => formData[field] && formData[field] !== "",
-    );
-    const progress = (filledFields.length / fields.length) * 100;
-    setFormProgress(progress);
-  }, [formData]);
+  const fields = ["name", "phone", "email", "date", "guests"];
+  const filledFields = fields.filter(
+    (field) => formData[field] && formData[field] !== "",
+  );
+  const formProgress = (filledFields.length / fields.length) * 100;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -71,9 +63,11 @@ const BookingForm = ({ formData, setFormData }) => {
         }
         break;
       case "email":
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(value)) {
-          error = "Please enter a valid email address";
+        {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(value)) {
+            error = "Please enter a valid email address";
+          }
         }
         break;
       case "date":
@@ -103,13 +97,6 @@ const BookingForm = ({ formData, setFormData }) => {
 
   const isFieldValid = (field) => {
     return touchedFields[field] && formData[field] && !errors[field];
-  };
-
-  const getFieldStatus = (field) => {
-    if (!touchedFields[field]) return "neutral";
-    if (errors[field]) return "error";
-    if (formData[field]) return "success";
-    return "neutral";
   };
 
   return (

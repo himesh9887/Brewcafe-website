@@ -8,10 +8,8 @@ const Hero = () => {
   const heroRef = useRef(null);
 
   useEffect(() => {
-    // Trigger animation on mount
-    setIsVisible(true);
+    const timer = window.setTimeout(() => setIsVisible(true), 0);
     
-    // Optional: Intersection Observer for scroll-triggered re-animation
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -25,7 +23,10 @@ const Hero = () => {
       observer.observe(heroRef.current);
     }
 
-    return () => observer.disconnect();
+    return () => {
+      window.clearTimeout(timer);
+      observer.disconnect();
+    };
   }, []);
 
   const stats = [

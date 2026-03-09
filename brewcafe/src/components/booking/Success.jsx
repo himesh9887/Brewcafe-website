@@ -17,25 +17,20 @@ import {
 import Button from '../common/Button';
 
 const Success = ({ bookingData, onReset }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [confetti, setConfetti] = useState([]);
-  const [bookingId] = useState(() => 'BC' + Date.now().toString().slice(-6).toUpperCase());
-  const [copied, setCopied] = useState(false);
-
-  useEffect(() => {
-    setIsVisible(true);
-    
-    // Generate confetti
-    const newConfetti = [...Array(50)].map((_, i) => ({
+  const [isVisible] = useState(true);
+  const [confetti, setConfetti] = useState(() =>
+    [...Array(50)].map((_, i) => ({
       id: i,
       left: Math.random() * 100,
       delay: Math.random() * 2,
       duration: 2 + Math.random() * 2,
       color: ['#d4af37', '#fde047', '#10b981', '#3b82f6'][Math.floor(Math.random() * 4)],
-    }));
-    setConfetti(newConfetti);
+    }))
+  );
+  const [bookingId] = useState(() => bookingData.id || ('BC' + Date.now().toString().slice(-6).toUpperCase()));
+  const [copied, setCopied] = useState(false);
 
-    // Auto-hide confetti after animation
+  useEffect(() => {
     const timer = setTimeout(() => setConfetti([]), 5000);
     return () => clearTimeout(timer);
   }, []);
@@ -48,7 +43,7 @@ const Success = ({ bookingData, onReset }) => {
           text: `I've booked a table at BrewCafe on ${bookingData.date} at ${bookingData.time}`,
           url: window.location.href,
         });
-      } catch (err) {
+      } catch {
         console.log('Share cancelled');
       }
     } else {

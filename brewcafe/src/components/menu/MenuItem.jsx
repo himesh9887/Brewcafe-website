@@ -62,9 +62,10 @@ const MenuItem = ({ item, viewMode = 'grid', index = 0, isVisible = true }) => {
           )}
 
           {/* Like button */}
-          <button 
-            onClick={handleLike}
-            className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md transition-all duration-300
+            <button 
+              type="button"
+              onClick={handleLike}
+              className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md transition-all duration-300
                       ${isLiked 
                         ? 'bg-red-500 text-white scale-110' 
                         : 'bg-[#1a1a2e]/50 text-white opacity-0 group-hover:opacity-100 hover:bg-red-500 hover:text-white'
@@ -75,6 +76,7 @@ const MenuItem = ({ item, viewMode = 'grid', index = 0, isVisible = true }) => {
 
           {/* Quick add button (hover) */}
           <button 
+            type="button"
             onClick={handleAddToCart}
             className={`absolute bottom-3 right-3 p-3 rounded-full shadow-xl
                       transform transition-all duration-500
@@ -128,6 +130,7 @@ const MenuItem = ({ item, viewMode = 'grid', index = 0, isVisible = true }) => {
           {/* Action buttons */}
           <div className="flex gap-2 mt-auto">
             <button 
+              type="button"
               onClick={handleAddToCart}
               disabled={isAdded}
               className={`flex-1 py-2.5 rounded-lg font-semibold text-sm flex items-center 
@@ -150,6 +153,8 @@ const MenuItem = ({ item, viewMode = 'grid', index = 0, isVisible = true }) => {
               )}
             </button>
             <button 
+              type="button"
+              onClick={handleAddToCart}
               className="px-4 py-2.5 border border-gray-700 rounded-lg text-[#f5f5dc] 
                        hover:border-[#d4af37] hover:text-[#d4af37] hover:bg-[#d4af37]/5
                        transition-all duration-300"
@@ -231,6 +236,7 @@ const MenuItem = ({ item, viewMode = 'grid', index = 0, isVisible = true }) => {
           {/* Actions */}
           <div className="flex sm:flex-col gap-2">
             <button 
+              type="button"
               onClick={handleAddToCart}
               disabled={isAdded}
               className={`flex-1 sm:flex-none px-6 py-2.5 rounded-lg font-semibold text-sm 
@@ -244,6 +250,7 @@ const MenuItem = ({ item, viewMode = 'grid', index = 0, isVisible = true }) => {
               <span className="sm:hidden">{isAdded ? 'Added!' : 'Add'}</span>
             </button>
             <button 
+              type="button"
               onClick={handleLike}
               className={`p-2.5 rounded-lg border transition-all duration-300
                         ${isLiked 

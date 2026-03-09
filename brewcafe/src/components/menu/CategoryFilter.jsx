@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Coffee, CupSoda, Croissant, Utensils, Sparkles } from 'lucide-react';
 
-const CategoryFilter = ({ activeCategory, setActiveCategory }) => {
+const CategoryFilter = ({ activeCategory, setActiveCategory, counts = {} }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [indicatorStyle, setIndicatorStyle] = useState({});
@@ -13,7 +13,7 @@ const CategoryFilter = ({ activeCategory, setActiveCategory }) => {
       id: 'all', 
       label: 'All Items', 
       icon: Utensils,
-      count: 24,
+      count: counts.all ?? 0,
       color: 'from-gray-400 to-gray-600',
       description: 'Everything we offer'
     },
@@ -21,7 +21,7 @@ const CategoryFilter = ({ activeCategory, setActiveCategory }) => {
       id: 'coffee', 
       label: 'Coffee', 
       icon: Coffee,
-      count: 12,
+      count: counts.coffee ?? 0,
       color: 'from-[#d4af37] to-[#8b6914]',
       description: 'Hot brews & espresso'
     },
@@ -29,7 +29,7 @@ const CategoryFilter = ({ activeCategory, setActiveCategory }) => {
       id: 'cold', 
       label: 'Cold Drinks', 
       icon: CupSoda,
-      count: 8,
+      count: counts.cold ?? 0,
       color: 'from-cyan-400 to-blue-500',
       description: 'Iced & refreshing'
     },
@@ -37,7 +37,7 @@ const CategoryFilter = ({ activeCategory, setActiveCategory }) => {
       id: 'food', 
       label: 'Pastries', 
       icon: Croissant,
-      count: 4,
+      count: counts.food ?? 0,
       color: 'from-orange-400 to-amber-500',
       description: 'Fresh baked goods'
     },

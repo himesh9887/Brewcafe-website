@@ -7,7 +7,7 @@ const MenuHero = () => {
   const sectionRef = useRef(null);
 
   useEffect(() => {
-    setIsVisible(true);
+    const timer = window.setTimeout(() => setIsVisible(true), 0);
     
     const handleMouseMove = (e) => {
       if (sectionRef.current) {
@@ -25,6 +25,7 @@ const MenuHero = () => {
     }
 
     return () => {
+      window.clearTimeout(timer);
       if (section) {
         section.removeEventListener('mousemove', handleMouseMove);
       }

@@ -8,12 +8,14 @@ import Menu from './pages/Menu';
 import Booking from './pages/Booking';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
+import ScrollToTop from './components/layout/ScrollToTop';
 
 function App() {
   return (
     <AuthProvider>
       <CartProvider>
         <Router>
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />

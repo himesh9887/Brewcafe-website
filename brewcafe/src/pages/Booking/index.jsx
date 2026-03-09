@@ -7,6 +7,7 @@ import Payment from '../../components/booking/Payment';
 import Success from '../../components/booking/Success';
 import Button from '../../components/common/Button';
 import { sendBookingEmails } from '../../services/bookingEmails';
+import { api } from '../../services/api';
 
 import { ChevronRight, ChevronLeft, Check, Calendar, Clock, Users, CreditCard, Sparkles, Mail } from 'lucide-react';
 
@@ -30,6 +31,7 @@ const Booking = () => {
   });
   const [selectedTime, setSelectedTime] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('card');
+  const [bookingRecord, setBookingRecord] = useState(null);
   const [paymentDetails, setPaymentDetails] = useState({
     method: 'card',
     paymentType: 'full',
@@ -53,7 +55,8 @@ const Booking = () => {
   ];
 
   useEffect(() => {
-    setIsVisible(true);
+    const timer = window.setTimeout(() => setIsVisible(true), 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   const handleNext = async () => {
@@ -64,6 +67,18 @@ const Booking = () => {
       await new Promise(resolve => setTimeout(resolve, 1500));
 
       try {
+        const booking = await api.createBooking({
+          customerName: formData.name,
+          customerEmail: formData.email,
+          customerPhone: formData.phone,
+          bookingDate: formData.date,
+          bookingTime: selectedTime,
+          guests: formData.guests,
+          requests: formData.requests,
+          paymentMethod: PAYMENT_LABELS[paymentDetails.method] || paymentDetails.method,
+        });
+        setBookingRecord(booking);
+
         await sendBookingEmails({
           customerName: formData.name,
           customerEmail: formData.email,
@@ -106,10 +121,11 @@ const Booking = () => {
         <div className="min-h-screen bg-[#0f0f1e] pt-24 pb-12">
           <div className="max-w-3xl mx-auto px-4">
             <Success 
-              bookingData={{ ...formData, time: selectedTime }} 
+              bookingData={{ ...formData, time: selectedTime, id: bookingRecord?.id }}
               onReset={() => {
                 setStep(1);
                 setIsComplete(false);
+                setBookingRecord(null);
                 setFormData({
                   name: '',
                   email: '',
@@ -177,7 +193,7 @@ const Booking = () => {
               />
               
               <div className="flex items-center justify-between relative">
-                {steps.map((s, idx) => {
+                {steps.map((s) => {
                   const Icon = s.icon;
                   const isActive = step >= s.id;
                   const isCompleted = step > s.id;
@@ -186,7 +202,7 @@ const Booking = () => {
                     <div key={s.id} className="flex flex-col items-center relative">
                       {/* Step circle */}
                       <div 
-                        className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center 
+                      className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center 
                                   mb-2 sm:mb-3 transition-all duration-500 z-10 border-2
                                   ${isCompleted 
                                     ? 'bg-[#d4af37] border-[#d4af37] text-[#1a1a2e]' 
@@ -270,7 +286,7 @@ const Booking = () => {
                           { label: 'Guests', value: `${formData.guests} people`, icon: Users },
                           {
                             label: 'Payment',
-                            value: `${PAYMENT_LABELS[paymentDetails.method] || paymentMethod} (${paymentDetails.paymentType === 'full' ? 'Full' : 'Advance'})`,
+                            value: `${PAYMENT_LABELS[paymentDetails.method] || paymentDetails.method || paymentMethod} (${paymentDetails.paymentType === 'full' ? 'Full' : 'Advance'})`,
                             icon: CreditCard,
                           },
                         ].map((item, idx) => (

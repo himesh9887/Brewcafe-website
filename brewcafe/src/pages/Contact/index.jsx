@@ -2,7 +2,6 @@ import React from 'react';
 import Layout from '../../components/layout/Layout';
 import ContactForm from '../../components/contact/ContactForm';
 import ContactInfo from '../../components/contact/ContactInfo';
-import SectionTitle from '../../components/common/SectionTitle';
 
 const Contact = () => {
   return (
@@ -31,12 +30,14 @@ const Contact = () => {
               <h2 className="text-2xl font-bold mb-6 text-secondary">Contact Information</h2>
               <ContactInfo />
               
-              {/* Map Placeholder */}
-              <div className="mt-8 rounded-xl overflow-hidden border border-gray-800 h-64 bg-card flex items-center justify-center">
-                <div className="text-center text-gray-500">
-                  <p>Interactive Map</p>
-                  <p className="text-sm">123 Coffee Street, NY 10001</p>
-                </div>
+              <div className="mt-8 overflow-hidden rounded-2xl border border-gray-800 bg-card">
+                <iframe
+                  title="BrewCafe location"
+                  src="https://www.google.com/maps?q=123+Coffee+Street+New+York+NY+10001&output=embed"
+                  className="h-64 w-full"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
               </div>
             </div>
           </div>
