@@ -55,12 +55,12 @@ const Footer = () => {
       </button>
 
       <div className="border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-          <div className="card flex flex-col gap-6 px-6 py-8 lg:flex-row lg:items-center lg:justify-between">
+        <div className="max-w-7xl mx-auto px-4 py-10 sm:px-6 lg:px-8">
+          <div className="card flex flex-col gap-5 px-4 py-6 sm:px-6 sm:py-8 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <p className="mb-2 text-sm uppercase tracking-[0.24em] text-accent/80">Newsletter</p>
-              <h3 className="text-3xl font-bold text-secondary">Fresh offers. New brews.</h3>
-              <p className="mt-2 text-sm text-gray-400">Get launch offers, tasting notes, and seasonal updates.</p>
+              <p className="mb-2 text-[11px] uppercase tracking-[0.24em] text-accent/80 sm:text-sm">Newsletter</p>
+              <h3 className="text-2xl font-bold text-secondary sm:text-3xl">Fresh offers. New brews.</h3>
+              <p className="mt-2 text-sm leading-6 text-gray-400">Get launch offers, tasting notes, and seasonal updates.</p>
             </div>
             <form onSubmit={handleSubscribe} className="flex w-full max-w-xl flex-col gap-3 sm:flex-row">
               <div className="relative flex-1">
@@ -89,9 +89,9 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-2 xl:grid-cols-4">
-          <div className="space-y-5">
+      <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+        <div className="grid gap-4 sm:gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <div className="card space-y-5 p-5 sm:p-6 xl:bg-transparent xl:p-0 xl:shadow-none xl:border-none">
             <Link to="/" className="inline-flex items-center gap-3">
               <div className="rounded-2xl bg-accent/10 p-3">
                 <Coffee className="text-accent" size={24} />
@@ -119,12 +119,12 @@ const Footer = () => {
             </div>
           </div>
 
-          <div>
+          <div className="card p-5 sm:p-6 xl:bg-transparent xl:p-0 xl:shadow-none xl:border-none">
             <h3 className="mb-5 text-lg font-semibold text-secondary">Navigate</h3>
-            <ul className="space-y-3">
+            <ul className="grid grid-cols-2 gap-3 xl:block xl:space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.name}>
-                  <Link to={link.path} className="group inline-flex items-center gap-3 text-sm text-gray-400 transition-colors hover:text-accent">
+                  <Link to={link.path} className="group inline-flex items-center gap-3 rounded-2xl bg-white/5 px-3 py-3 text-sm text-gray-400 transition-colors hover:text-accent xl:bg-transparent xl:px-0 xl:py-0">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent transition-transform duration-300 group-hover:scale-150" />
                     {link.name}
                   </Link>
@@ -133,7 +133,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div>
+          <div className="card p-5 sm:p-6 xl:bg-transparent xl:p-0 xl:shadow-none xl:border-none">
             <h3 className="mb-5 text-lg font-semibold text-secondary">Visit</h3>
             <div className="space-y-4 text-sm text-gray-400">
               <div className="flex items-start gap-3">
@@ -151,7 +151,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div>
+          <div className="card p-5 sm:p-6 xl:bg-transparent xl:p-0 xl:shadow-none xl:border-none">
             <h3 className="mb-5 text-lg font-semibold text-secondary">Hours</h3>
             <div className="space-y-4 text-sm text-gray-400">
               <div className="flex items-start gap-3">
@@ -178,11 +178,11 @@ const Footer = () => {
       </div>
 
       <div className="border-t border-gray-800">
-        <div className="max-w-7xl mx-auto flex flex-col gap-3 px-4 py-6 text-sm text-gray-500 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-          <p className="flex items-center gap-1">
+        <div className="max-w-7xl mx-auto flex flex-col gap-4 px-4 py-6 text-sm text-gray-500 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+          <p className="flex flex-wrap items-center gap-1 text-center sm:text-left">
             Copyright {currentYear} BrewCafe. Crafted with <Heart size={14} className="fill-current text-red-500" /> and coffee.
           </p>
-          <div className="flex gap-5">
+          <div className="flex flex-wrap justify-center gap-4 sm:justify-start sm:gap-5">
             <a href="#!" className="transition-colors hover:text-accent">Privacy</a>
             <a href="#!" className="transition-colors hover:text-accent">Terms</a>
             <a href="#!" className="transition-colors hover:text-accent">Cookies</a>
